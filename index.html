@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input type="text" id="domain"><button type="button" onclick="setProxyDomain(document.getElementById('domain').value);setTimeout(()=>{location.href='/'},100)">go!</button>
+    <script>
+        // Service Workerの登録
+        
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(reg => console.log('Service Worker 登録成功:', reg))
+                .catch(err => console.error('Service Worker 登録失敗:', err));
+        }
+
+        // ドメイン情報を保存する関数（例として IndexedDB に保存）
+        async function setProxyDomain(domain) {
+            // ネイティブのIndexedDBを開いて保存する簡易処理
+            const request = indexedDB.open("ProxyConfig", 2);
+            request.onupgradeneeded = (e) => {
+                e.target.result.createObjectStore("settings");
+            };
+            request.onsuccess = (e) => {
+                const db = e.target.result;
+                const tx = db.transaction("settings", "readwrite");
+                tx.objectStore("settings").put(domain, "domain");
+            };
+        }
+    </script>
+</body>
+
+</html>
