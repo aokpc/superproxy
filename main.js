@@ -59,7 +59,7 @@ Deno.serve(async (req) => {
 
     } else if (url.pathname === "/index.html" || url.pathname === "/noproxy") {
         try {
-            const html = await Deno.readTextFile("index.html"); // Denoのファイル読み込みAPI
+            const html = await Deno.readTextFile("./static/index.html"); // Denoのファイル読み込みAPI
             return new Response(html, {
                 status: 200,
                 headers: { "content-type": "text/html" },
@@ -69,7 +69,7 @@ Deno.serve(async (req) => {
         }
     } else if (url.pathname === "/sw.js") {
         try {
-            const js = await Deno.readTextFile("sw.js"); // Denoのファイル読み込みAPI
+            const js = await Deno.readTextFile("./static/sw.js"); // Denoのファイル読み込みAPI
             return new Response(js, {
                 status: 200,
                 headers: { "content-type": "application/javascript" },
